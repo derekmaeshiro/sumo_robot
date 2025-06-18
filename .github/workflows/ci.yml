@@ -5,11 +5,11 @@ jobs:
     container:
       image: derekmaeshiro/msp430-gcc-9.3.1.11:latest
     steps:
-      - name: Checkout the repo
-        uses: actions/checkout@v3
-      - run: make
-      - run: make cppcheck
       - name: List running containers
         run: docker ps -o
       - name: Show logs for all containers
         run: docker logs $(docker ps -aq)
+      - name: Checkout the repo
+        uses: actions/checkout@v3
+      - run: make
+      - run: make cppcheck
