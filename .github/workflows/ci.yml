@@ -6,7 +6,7 @@ jobs:
       image: derekmaeshiro/msp430-gcc-9.3.1.11:latest
     steps:
       - name: List running containers
-        run: docker ps
+        run: docker ps || true
       - name: Show logs for all containers
         run: docker logs $(docker ps -aq)
       - name: Checkout the repo
