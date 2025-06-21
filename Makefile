@@ -62,4 +62,5 @@ cppcheck:
 	@$(CPPCHECK) --quiet --enable=all --error-exitcode=1 \
 	--inline-suppr \
 	-I $(INCLUDE_DIRS) \
-	$(SOURCES) 	
+	$(SOURCES) \
+	-i external/printf	
