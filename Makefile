@@ -22,15 +22,35 @@ FORMAT = clang-format
 #Files
 TARGET = $(BIN_DIR) executable
 
-SOURCES = src/main.c \
+SOURCES_WITH_HEADERS = \
 	  src/app/drive.c \
 	  src/app/enemy.c \
 	  src/drivers/i2c.c \
 	  src/drivers/uart.c \
-	  src/test/test.c
+
+SOURCES = \
+	  src/main.c \
+	  $(SOURCES_WITH_HEADERS)
+
+HEADERS = \
+	  $(SOURCES_WITH_HEADERS:.c=.h) \
+	  src/common/defines.h \
 
 OBJECT_NAMES = $(SOURCES:.c=.o)
 OBJECTS = $(patsubst %, $(OBJ_DIR)/%, $(OBJECT_NAMES))
+
+#Static Analysis
+##Don't check the msp430 helper headers
+CPPCHECK_INCLUDES = ./src
+CPPCHECK_IGNORE = external/printf
+CPPCHECK_FLAGS = \
+	--quiet --enable=all --error-exitcode=1 \
+	--inline-suppr \
+	--suppress=missingIncludeSystem \
+	--suppress=unmatchedSuppression \
+	--suppress=unusedFunction \
+	$(addprefix -I, $(CPPCHECK_INCLUDES)) \
+	$(addprefix -i, $(CPPCHECK_IGNORE))
 
 #Flags
 MCU = msp430g2553
@@ -40,7 +60,7 @@ LDFLAGS = -mmcu=$(MCU) $(addprefix -L, $(LIB_DIRS))
 
 #Build
 #Linking
-$(TARGET): $(OBJECTS)
+$(TARGET): $(OBJECTS) $(HEADERS)
 	@mkdir -p $(dir $@)
 	$(CC) $(LDFLAGS) $^ -o $@
 
@@ -55,17 +75,13 @@ $(OBJ_DIR)/%.o: %.c
 all: $(TARGET)
 
 clean:
-	$(RM) -r $(BUILD_DIR)
+	$(RM) -rf $(BUILD_DIR)
 
 flash: $(TARGET)
 	$(DEBUG) tilib "prog $(TARGET)"
 
 cppcheck:
-	@$(CPPCHECK) --quiet --enable=all --error-exitcode=1 \
-	--inline-suppr \
-	-I $(INCLUDE_DIRS) \
-	$(SOURCES) \
-	-i external/printf
+	$(CPPCHECK) $(CPPCHECK_FLAGS) $(SOURCES)
 
 format:
-	@$(FORMAT) -i $(SOURCES)
+	@$(FORMAT) -i $(SOURCES) $(HEADERS)
