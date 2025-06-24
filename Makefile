@@ -1,5 +1,6 @@
 #Directories
-MSPGCC_ROOT_DIR = /Users/derekmaeshiro/downloads/msp430-gcc-9.3.1.11_macos
+TOOLS_DIR = ${TOOLS_PATH}
+MSPGCC_ROOT_DIR = $(TOOLS_DIR)/msp430-gcc
 MSPGCC_BIN_DIR = $(MSPGCC_ROOT_DIR)/bin
 MSPGCC_INCLUDE_DIR = $(MSPGCC_ROOT_DIR)/include
 INCLUDE_DIRS = $(MSPGCC_INCLUDE_DIR)
