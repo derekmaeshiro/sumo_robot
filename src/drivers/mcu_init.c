@@ -3,7 +3,7 @@
 #include "../common/defines.h"
 #include <msp430.h>
 
-static void watchdog_stop(void) 
+static void watchdog_stop(void)
 {
     WDTCTL = WDTPW + WDTHOLD; // stop watchdog
 }
