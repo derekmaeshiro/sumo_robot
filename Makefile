@@ -20,13 +20,12 @@ CPPCHECK = cppcheck
 FORMAT = clang-format
 
 #Files
-TARGET = $(BIN_DIR) executable
+TARGET = $(BIN_DIR)/executable
 
 SOURCES_WITH_HEADERS = \
+	  src/drivers/io.c \
 	  src/app/drive.c \
 	  src/app/enemy.c \
-	  src/drivers/i2c.c \
-	  src/drivers/uart.c \
 
 SOURCES = \
 	  src/main.c \
