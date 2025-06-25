@@ -19,7 +19,7 @@ static inline uint8_t io_port(io_e io)
     return (io & IO_PORT_MASK) >> IO_PORT_OFFSET;
 }
 
-static inline uint8_t io_pin_idx(io_e io) 
+static inline uint8_t io_pin_idx(io_e io)
 {
     return io & IO_PIN_MASK;
 }
@@ -45,7 +45,7 @@ static volatile uint8_t *const port_sel1_regs[IO_PORT_CNT] = { &P1SEL, &P2SEL, &
 static volatile uint8_t *const port_sel2_regs[IO_PORT_CNT] = { &P1SEL2, &P2SEL2, &P3SEL2 };
 #endif
 
-void io_configure(io_e io, const struct io_config *config) 
+void io_configure(io_e io, const struct io_config *config)
 {
     io_set_select(io, config->select);
     io_set_direction(io, config->dir);
