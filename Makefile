@@ -24,11 +24,12 @@ TARGET = $(BIN_DIR)/executable
 
 SOURCES_WITH_HEADERS = \
 	  src/drivers/io.c \
+	  src/drivers/mcu_init.c \
 	  src/app/drive.c \
 	  src/app/enemy.c \
 
 SOURCES = \
-	  src/main.c \
+	  src/test/main.c \
 	  $(SOURCES_WITH_HEADERS)
 
 HEADERS = \
@@ -47,6 +48,7 @@ CPPCHECK_FLAGS = \
 	--inline-suppr \
 	--suppress=missingIncludeSystem \
 	--suppress=unmatchedSuppression \
+	--suppress=staticFunction \
 	--suppress=unusedFunction \
 	$(addprefix -I, $(CPPCHECK_INCLUDES)) \
 	$(addprefix -i, $(CPPCHECK_IGNORE))
