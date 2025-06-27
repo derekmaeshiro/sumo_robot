@@ -7,6 +7,7 @@
 
 // TODO: Improve multiple HW targets handling
 #define LAUNCHPAD
+// #define NSUMO
 
 // clang-format off
 typedef enum {
@@ -100,6 +101,7 @@ struct io_config
 };
 
 // TODO: functions
+void io_init(void);
 void io_configure(io_e io, const struct io_config *config);
 void io_set_select(io_e io, io_select_e select);
 void io_set_direction(io_e io, io_dir_e direction);
