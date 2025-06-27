@@ -19,6 +19,16 @@ typedef enum {
 } io_generic_e;
 //clang-format on
 
+// clang-format off
+typedef enum {
+    IO_10, IO_11, IO_12, IO_13, IO_14, IO_15, IO_16, IO_17,
+    IO_20, IO_21, IO_22, IO_23, IO_24, IO_25, IO_26, IO_27,
+#if defined(NSUMO)
+    IO_30, IO_31, IO_32, IO_33, IO_34, IO_35, IO_36, IO_37,
+#endif
+} io_generic_e;
+//clang-format on
+
 typedef enum {
 #if defined(LAUNCHPAD) // launchpad (MSP430G2553IN20)
     IO_TEST_LED = IO_10,
