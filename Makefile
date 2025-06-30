@@ -1,3 +1,16 @@
+# Check arguments
+ifeq ($(HW), LAUNCHPAD) # HW argument
+TARGET_NAME = launchpad
+else ifeq ($(HW), NSUMO)
+TARGET_NAME = nsumo
+else ifeq ($(MAKECMDGOALS), clean)
+else ifeq ($(MAKECMDGOALS), cppcheck)
+else ifeq ($(MAKECMDGOALS), format)
+# HW argument not required for this rule
+else
+$(error "Must pass HW=LAUNCHPAD or HW=NSUMO")
+endif
+
 #Directories
 TOOLS_DIR = ${TOOLS_PATH}
 MSPGCC_ROOT_DIR = $(TOOLS_DIR)
@@ -7,7 +20,6 @@ INCLUDE_DIRS = $(MSPGCC_INCLUDE_DIR)
 LIB_DIRS = $(MSPGCC_INCLUDE_DIR)
 BUILD_DIR = build
 OBJ_DIR = $(BUILD_DIR)/obj
-BIN_DIR = $(BUILD_DIR)/bin
 TI_CCS_DIR = /Applications/ti/ccs2011/ccs
 DEBUG_BIN_DIR = $(TI_CCS_DIR)/ccs_base/DebugServer/bin
 DEBUG_DRIVERS_DIR = $(TI_CCS_DIR)/ccs_base/DebugServer/drivers
@@ -20,7 +32,7 @@ CPPCHECK = cppcheck
 FORMAT = clang-format
 
 #Files
-TARGET = $(BIN_DIR)/executable
+TARGET = $(BUILD_DIR)/$(TARGET_NAME)
 
 SOURCES_WITH_HEADERS = \
 	  src/drivers/io.c \
@@ -39,6 +51,10 @@ HEADERS = \
 OBJECT_NAMES = $(SOURCES:.c=.o)
 OBJECTS = $(patsubst %, $(OBJ_DIR)/%, $(OBJECT_NAMES))
 
+# Defines
+HW_DEFINE = $(addprefix -D, $(HW)) # e.g. -DNSUMO or -DLAUNCHPAD
+DEFINES = $(HW_DEFINE)
+
 #Static Analysis
 ##Don't check the msp430 helper headers
 CPPCHECK_INCLUDES = ./src
@@ -56,8 +72,8 @@ CPPCHECK_FLAGS = \
 #Flags
 MCU = msp430g2553
 WFLAGS = -Wall -Wextra -Werror -Wshadow
-CFLAGS = -mmcu=$(MCU) $(WFLAGS) $(addprefix -I, $(INCLUDE_DIRS)) -Og -g
-LDFLAGS = -mmcu=$(MCU) $(addprefix -L, $(LIB_DIRS))
+CFLAGS = -mmcu=$(MCU) $(WFLAGS) $(addprefix -I, $(INCLUDE_DIRS)) $(DEFINES) -Og -g
+LDFLAGS = -mmcu=$(MCU) $(DEFINES) $(addprefix -L, $(LIB_DIRS))
 
 #Build
 #Linking

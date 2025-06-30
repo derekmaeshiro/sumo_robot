@@ -6,8 +6,6 @@
  */
 
 // TODO: Improve multiple HW targets handling
-#define LAUNCHPAD
-// #define NSUMO
 
 // clang-format off
 typedef enum {
