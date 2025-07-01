@@ -1,8 +1,9 @@
-#include <stdint.h>
 #include "io.h"
 #include "../common/defines.h"
-#include <../common/assert_handler.h>
+#include "../common/assert_handler.h"
+
 #include <msp430.h>
+#include <stdint.h>
 #include <assert.h>
 
 #if defined(LAUNCHPAD)
