@@ -4,6 +4,7 @@
         "msp430.h": "c",
         "mcu_init.h": "c",
         "stdint.h": "c",
-        "io.h": "c"
+        "io.h": "c",
+        "assert_handler.h": "c"
     }
 }
