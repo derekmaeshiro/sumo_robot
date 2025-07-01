@@ -37,8 +37,10 @@ TARGET = $(BUILD_DIR)/$(TARGET_NAME)
 SOURCES_WITH_HEADERS = \
 	  src/drivers/io.c \
 	  src/drivers/mcu_init.c \
+	  src/drivers/led.c \
 	  src/app/drive.c \
 	  src/app/enemy.c \
+	  src/common/assert_handler.c \
 
 SOURCES = \
 	  src/test/main.c \
