@@ -2,6 +2,7 @@
 #include "io.h"
 #include "../common/defines.h"
 #include <msp430.h>
+#include <assert.h>
 
 #if defined(LAUNCHPAD)
 #define IO_PORT_CNT (2u)
@@ -9,6 +10,8 @@
 #define IO_PORT_CNT (3u)
 #endif
 #define IO_PIN_CNT_PER_PORT (8u)
+
+static_assert(sizeof(io_generic_e) == 1, "Unexpected size, -fshort-enums missing?");
 
 #define IO_PORT_OFFSET (3u)
 #define IO_PORT_MASK (0x3u << IO_PORT_OFFSET)
