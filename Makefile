@@ -1,14 +1,23 @@
 # Check arguments
 ifeq ($(HW), LAUNCHPAD) # HW argument
-TARGET_NAME = launchpad
+TARGET_HW = launchpad
 else ifeq ($(HW), NSUMO)
-TARGET_NAME = nsumo
+TARGET_HW = nsumo
 else ifeq ($(MAKECMDGOALS), clean)
 else ifeq ($(MAKECMDGOALS), cppcheck)
 else ifeq ($(MAKECMDGOALS), format)
 # HW argument not required for this rule
 else
 $(error "Must pass HW=LAUNCHPAD or HW=NSUMO")
+endif
+TARGET_NAME = $(TARGET_HW)
+
+ifneq ($(TEST),) # TEST argument
+ifeq ($(findstring test_, $(TEST)),)
+$(error "TEST=$(TEST) is invalid (test function must start with test_)")
+else
+TARGET_NAME=$(TEST)
+endif
 endif
 
 #Directories
@@ -18,7 +27,7 @@ MSPGCC_BIN_DIR = $(MSPGCC_ROOT_DIR)/bin
 MSPGCC_INCLUDE_DIR = $(MSPGCC_ROOT_DIR)/include
 INCLUDE_DIRS = $(MSPGCC_INCLUDE_DIR)
 LIB_DIRS = $(MSPGCC_INCLUDE_DIR)
-BUILD_DIR = build/$(TARGET_NAME)
+BUILD_DIR = build
 OBJ_DIR = $(BUILD_DIR)/obj
 TI_CCS_DIR = /Applications/ti/ccs2011/ccs
 DEBUG_BIN_DIR = $(TI_CCS_DIR)/ccs_base/DebugServer/bin
@@ -32,7 +41,7 @@ CPPCHECK = cppcheck
 FORMAT = clang-format
 
 #Files
-TARGET = $(BUILD_DIR)/$(TARGET_NAME)
+TARGET = $(BUILD_DIR)/bin/$(TARGET_HW)/$(TARGET_NAME)
 
 SOURCES_WITH_HEADERS = \
 	  src/drivers/io.c \
@@ -42,9 +51,18 @@ SOURCES_WITH_HEADERS = \
 	  src/app/enemy.c \
 	  src/common/assert_handler.c \
 
+ifndef TEST
+
 SOURCES = \
-	  src/test/main.c \
+	  src/main.c \
 	  $(SOURCES_WITH_HEADERS)
+else
+SOURCES = \
+	  src/test/test.c \
+	  $(SOURCES_WITH_HEADERS)
+# Delete object file to force rebuild when changing test
+$(shell rm -f $(BUILD_DIR)/obj/src/test/test.o)
+endif
 
 HEADERS = \
 	  $(SOURCES_WITH_HEADERS:.c=.h) \
@@ -55,7 +73,10 @@ OBJECTS = $(patsubst %, $(OBJ_DIR)/%, $(OBJECT_NAMES))
 
 # Defines
 HW_DEFINE = $(addprefix -D, $(HW)) # e.g. -DNSUMO or -DLAUNCHPAD
-DEFINES = $(HW_DEFINE)
+TEST_DEFINE = $(addprefix -DTEST=, $(TEST))
+DEFINES = \
+	$(HW_DEFINE) \
+	$(TEST_DEFINE)
 
 #Static Analysis
 ##Don't check the msp430 helper headers

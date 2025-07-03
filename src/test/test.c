@@ -5,19 +5,20 @@
 #include "../common/assert_handler.h"
 #include "../common/defines.h"
 
+SUPPRESS_UNUSED
 static void test_setup(void)
 {
     mcu_init();
 }
 
-/*
+SUPPRESS_UNUSED
 static void test_assert(void)
 {
     test_setup();
     ASSERT(0);
 }
-*/
 
+SUPPRESS_UNUSED
 static void test_blink_led(void)
 {
     test_setup();
@@ -30,7 +31,7 @@ static void test_blink_led(void)
     }
 }
 
-/*
+SUPPRESS_UNUSED
 static void test_launchpad_io_pins_output(void)
 {
      test_setup();
@@ -51,9 +52,8 @@ static void test_launchpad_io_pins_output(void)
           }
      }
 }
-*/
 
-/*
+SUPPRESS_UNUSED
 static void test_launchpad_io_pins_input(void)
 {
     test_setup();
@@ -97,13 +97,9 @@ static void test_launchpad_io_pins_input(void)
         BUSY_WAIT_ms(2000);
     }
 }
-*/
 
-int main(void)
+int main()
 {
-    // test_assert();
-    test_blink_led();
-    // test_launchpad_io_pins_output();
-    // test_launchpad_io_pins_input();
-    return 0;
+    TEST();
+    ASSERT(0);
 }
