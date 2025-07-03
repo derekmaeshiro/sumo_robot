@@ -11,4 +11,5 @@ jobs:
       - run: make cppcheck
       - run: TOOLS_PATH=/home/ubuntu/dev/tools/msp430-gcc make HW=NSUMO
       - run: TOOLS_PATH=/home/ubuntu/dev/tools/msp430-gcc make HW=LAUNCHPAD
+      - run: TOOLS_PATH=/home/ubuntu/dev/tools/msp430-gcc tools/build_tests.sh
 
