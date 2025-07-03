@@ -1,4 +1,4 @@
-#include "../common/assert_handler.h"
+#include "../src/common/assert_handler.h"
 
 int main(void)
 {
